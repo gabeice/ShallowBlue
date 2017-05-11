@@ -29,14 +29,13 @@ class Display(object):
         for i in range(8):
             for j in range(8):
                 win = curses.newwin(3, 6, i*3, j*6)
-                win.addstr(self.board.get([i,j]).letter)
+                win.addstr(1, 2, self.board.get([i,j]).letter)
                 if [i, j] == self.selection:
                     win.bkgd(curses.color_pair(3))
                 elif (i+j)%2 == 0:
                     win.bkgd(curses.color_pair(1))
                 win.refresh()
                 self.spaces[i].append(win)
-        # curses.napms(3000)
 
     def get_move(self):
         key = None
@@ -44,6 +43,7 @@ class Display(object):
         if(self.selection):
             self.set_color(self.selection, 3)
         self.set_color(self.pos, 2)
+        self.spaces[self.pos[0]][self.pos[1]].addstr(1, 2, self.board.get(self.pos).letter)
         self.spaces[self.pos[0]][self.pos[1]].refresh()
 
         while key != '\n':
@@ -55,7 +55,7 @@ class Display(object):
                     self.set_color(self.pos, 1)
                 else:
                     self.set_color(self.pos, 0)
-                self.spaces[self.pos[0]][self.pos[1]].addstr(0, 0, self.board.get(self.pos).letter)
+                self.spaces[self.pos[0]][self.pos[1]].addstr(1, 2, self.board.get(self.pos).letter)
                 self.spaces[self.pos[0]][self.pos[1]].refresh()
 
                 if key == "A":
@@ -67,17 +67,8 @@ class Display(object):
                 else:
                     self.pos[1] = (self.pos[1]+1)%8
                 self.set_color(self.pos, 2)
-                self.spaces[self.pos[0]][self.pos[1]].addstr(0, 0, self.board.get(self.pos).letter)
+                self.spaces[self.pos[0]][self.pos[1]].addstr(1, 2, self.board.get(self.pos).letter)
                 self.spaces[self.pos[0]][self.pos[1]].refresh()
-
-        # if (selection[0] + selection[1])%2 == 0:
-        #     self.spaces[selection[0]][selection[1]].bkgd(curses.color_pair(1))
-        # else:
-        #     self.spaces[selection[0]][selection[1]].bkgd(curses.color_pair(0))
-        #     self.spaces[selection[0]][selection[1]].refresh()
-        #     selection = self.pos[:]
-        #     self.spaces[selection[0]][selection[1]].bkgd(curses.color_pair(3))
-        #     self.spaces[selection[0]][selection[1]].refresh()
 
         return self.pos
 
@@ -87,9 +78,3 @@ class Display(object):
         curses.nocbreak()
         curses.echo()
         curses.endwin()
-
-# test_board = Board()
-# test = Display(test_board)
-# selection = str(test.get_move())
-# test.close()
-# print (selection)
