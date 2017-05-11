@@ -1,5 +1,4 @@
 import curses
-from board import Board
 
 class Display(object):
     def __init__(self, board):
@@ -15,34 +14,50 @@ class Display(object):
         curses.cbreak()
         curses.start_color()
 
-        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        curses.init_color(3, 139, 69, 19)
+        curses.init_color(4, 245, 222, 179)
+
+        curses.init_pair(1, curses.COLOR_BLACK, 4)
         curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
         curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_RED)
+        curses.init_pair(4, curses.COLOR_BLACK, 3)
+
+        curses.init_pair(5, curses.COLOR_WHITE, 4)
+        curses.init_pair(6, curses.COLOR_WHITE, curses.COLOR_GREEN)
+        curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_RED)
+        curses.init_pair(8, curses.COLOR_WHITE, 3)
 
     def print_message(self, message):
         self.textfield.addstr(0, 0, message)
 
     def set_color(self, square, color):
-        self.spaces[square[0]][square[1]].bkgd(curses.color_pair(color))
+        spot = self.spaces[square[0]][square[1]]
+        if self.board.get(square).color == "black":
+            spot.bkgd(curses.color_pair(color))
+        else:
+            spot.bkgd(curses.color_pair(color+4))
 
     def render(self):
+        self.spaces = [[],[],[],[],[],[],[],[]]
         for i in range(8):
             for j in range(8):
                 win = curses.newwin(3, 6, i*3, j*6)
                 win.addstr(1, 2, self.board.get([i,j]).letter)
-                if [i, j] == self.selection:
-                    win.bkgd(curses.color_pair(3))
-                elif (i+j)%2 == 0:
-                    win.bkgd(curses.color_pair(1))
-                win.refresh()
                 self.spaces[i].append(win)
+                if [i, j] == self.selection:
+                    self.set_color([i, j], 3)
+                elif (i+j)%2 == 0:
+                    self.set_color([i, j], 1)
+                else:
+                    self.set_color([i, j], 4)
+                win.refresh()
 
     def get_move(self):
         key = None
         self.render()
+        self.set_color(self.pos, 2)
         if(self.selection):
             self.set_color(self.selection, 3)
-        self.set_color(self.pos, 2)
         self.spaces[self.pos[0]][self.pos[1]].addstr(1, 2, self.board.get(self.pos).letter)
         self.spaces[self.pos[0]][self.pos[1]].refresh()
 
@@ -54,7 +69,7 @@ class Display(object):
                 elif (self.pos[0] + self.pos[1])%2 == 0:
                     self.set_color(self.pos, 1)
                 else:
-                    self.set_color(self.pos, 0)
+                    self.set_color(self.pos, 4)
                 self.spaces[self.pos[0]][self.pos[1]].addstr(1, 2, self.board.get(self.pos).letter)
                 self.spaces[self.pos[0]][self.pos[1]].refresh()
 
@@ -69,9 +84,9 @@ class Display(object):
                 self.set_color(self.pos, 2)
                 self.spaces[self.pos[0]][self.pos[1]].addstr(1, 2, self.board.get(self.pos).letter)
                 self.spaces[self.pos[0]][self.pos[1]].refresh()
+            self.textfield.addstr(0,0, " ")
 
         return self.pos
-
 
     def close(self):
         self.screen.keypad(False)
