@@ -39,6 +39,9 @@ class Display(object):
         else:
             self.find(square).bkgd(curses.color_pair(color+4))
 
+    def sleep(self, time):
+        curses.napms(time)
+
     def render(self):
         self.spaces = [[],[],[],[],[],[],[],[]]
         for i in range(8):

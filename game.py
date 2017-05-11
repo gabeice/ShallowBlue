@@ -19,11 +19,14 @@ class Game(object):
             self.play_turn()
             self.switch_turn()
         else:
+            self.display.print_message("%s wins! " % self.board.winner())
+            self.display.textfield.refresh()
+            self.display.sleep(2000)
             self.display.close()
 
     def play_turn(self):
         self.display.print_message("%s's turn" % self.turn)
-        
+
         from_pos = []
         while self.board.get(from_pos).color != self.turn:
             from_pos = self.display.get_move()[:]

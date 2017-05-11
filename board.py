@@ -86,6 +86,12 @@ class Board(object):
     def over(self):
         return self.checkmate("white") or self.checkmate("black")
 
+    def winner(self):
+        if self.checkmate("white"):
+            return "black"
+        elif self.checkmate("black"):
+            return "white"
+
     def render(self):
         print ("_"*33)
         for row in self.board:
