@@ -30,12 +30,14 @@ class Display(object):
     def print_message(self, message):
         self.textfield.addstr(0, 0, message)
 
+    def find(self, square):
+        return self.spaces[square[0]][square[1]]
+
     def set_color(self, square, color):
-        spot = self.spaces[square[0]][square[1]]
         if self.board.get(square).color == "black":
-            spot.bkgd(curses.color_pair(color))
+            self.find(square).bkgd(curses.color_pair(color))
         else:
-            spot.bkgd(curses.color_pair(color+4))
+            self.find(square).bkgd(curses.color_pair(color+4))
 
     def render(self):
         self.spaces = [[],[],[],[],[],[],[],[]]
@@ -58,8 +60,8 @@ class Display(object):
         self.set_color(self.pos, 2)
         if(self.selection):
             self.set_color(self.selection, 3)
-        self.spaces[self.pos[0]][self.pos[1]].addstr(1, 2, self.board.get(self.pos).letter)
-        self.spaces[self.pos[0]][self.pos[1]].refresh()
+        self.find(self.pos).addstr(1, 2, self.board.get(self.pos).letter)
+        self.find(self.pos).refresh()
 
         while key != '\n':
             key = self.textfield.getkey()
@@ -70,8 +72,8 @@ class Display(object):
                     self.set_color(self.pos, 1)
                 else:
                     self.set_color(self.pos, 4)
-                self.spaces[self.pos[0]][self.pos[1]].addstr(1, 2, self.board.get(self.pos).letter)
-                self.spaces[self.pos[0]][self.pos[1]].refresh()
+                self.find(self.pos).addstr(1, 2, self.board.get(self.pos).letter)
+                self.find(self.pos).refresh()
 
                 if key == "A":
                     self.pos[0] = (self.pos[0]-1)%8
@@ -82,8 +84,8 @@ class Display(object):
                 else:
                     self.pos[1] = (self.pos[1]+1)%8
                 self.set_color(self.pos, 2)
-                self.spaces[self.pos[0]][self.pos[1]].addstr(1, 2, self.board.get(self.pos).letter)
-                self.spaces[self.pos[0]][self.pos[1]].refresh()
+                self.find(self.pos).addstr(1, 2, self.board.get(self.pos).letter)
+                self.find(self.pos).refresh()
             self.textfield.addstr(0,0, " ")
 
         return self.pos

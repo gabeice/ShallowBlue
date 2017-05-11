@@ -32,9 +32,9 @@ class Game(object):
             to_pos = self.display.get_move()[:]
 
         self.board.move_piece(from_pos, to_pos)
-        self.display.spaces[from_pos[0]][from_pos[1]].refresh()
-        self.display.spaces[to_pos[0]][to_pos[1]].refresh()
-        self.display.spaces[self.display.selection[0]][self.display.selection[1]].refresh()
+        self.display.find(from_pos).refresh()
+        self.display.find(to_pos).refresh()
+        self.display.find(self.display.selection).refresh()
         self.display.selection = None
 
 test = Game()
