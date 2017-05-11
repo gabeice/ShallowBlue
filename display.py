@@ -8,7 +8,7 @@ class Display(object):
         self.pos = [0,0]
         self.selection = None
         self.spaces = [[],[],[],[],[],[],[],[]]
-        self.textfield = curses.newwin(3, 8, 24, 0)
+        self.textfield = curses.newwin(3, 18, 24, 0)
 
         curses.noecho()
         curses.cbreak()
@@ -86,7 +86,7 @@ class Display(object):
                 self.set_color(self.pos, 2)
                 self.find(self.pos).addstr(1, 2, self.board.get(self.pos).letter)
                 self.find(self.pos).refresh()
-            self.textfield.addstr(0,0, " ")
+            self.textfield.addstr(0,0, "")
 
         return self.pos
 
