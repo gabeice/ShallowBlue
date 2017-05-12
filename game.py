@@ -30,7 +30,7 @@ class Game(object):
         self.display.print_message("  %s's turn   " % self.turn)
 
         from_pos = []
-        while self.board.get(from_pos).color != self.turn:
+        while self.board.get(from_pos).color != self.turn or self.board.valid_moves(from_pos) == []:
             from_pos = self.display.get_move()[:]
             if self.board.get(from_pos).color == opposite_color(self.turn):
                 self.display.print_message("Not your piece")
