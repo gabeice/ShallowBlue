@@ -4,7 +4,7 @@ from .null_piece import NullPiece
 class Pawn(Piece):
     def __init__(self, board, pos, color):
         super().__init__(board, pos, color)
-        self.letter = '♟'
+        self.symbol = '♟'
 
     def black_moves(self):
         result = []

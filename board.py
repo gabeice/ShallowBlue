@@ -97,6 +97,6 @@ class Board(object):
         for row in self.board:
             print ("|", end="")
             for item in row:
-                print (" %s |" % (item.letter), end="")
+                print (" %s |" % (item.symbol), end="")
             print ("\n", end="")
             print ("_"*33)

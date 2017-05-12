@@ -47,7 +47,7 @@ class Display(object):
         for i in range(8):
             for j in range(8):
                 win = curses.newwin(3, 6, i*3, j*6)
-                win.addstr(1, 2, self.board.get([i,j]).letter)
+                win.addstr(1, 2, self.board.get([i,j]).symbol)
                 self.spaces[i].append(win)
                 if [i, j] == self.selection:
                     self.set_color([i, j], 3)
@@ -63,7 +63,7 @@ class Display(object):
         self.set_color(self.pos, 2)
         if(self.selection):
             self.set_color(self.selection, 3)
-        self.find(self.pos).addstr(1, 2, self.board.get(self.pos).letter)
+        self.find(self.pos).addstr(1, 2, self.board.get(self.pos).symbol)
         self.find(self.pos).refresh()
 
         while key != '\n':
@@ -75,7 +75,7 @@ class Display(object):
                     self.set_color(self.pos, 1)
                 else:
                     self.set_color(self.pos, 4)
-                self.find(self.pos).addstr(1, 2, self.board.get(self.pos).letter)
+                self.find(self.pos).addstr(1, 2, self.board.get(self.pos).symbol)
                 self.find(self.pos).refresh()
 
                 if key == "A":
@@ -87,7 +87,7 @@ class Display(object):
                 else:
                     self.pos[1] = (self.pos[1]+1)%8
                 self.set_color(self.pos, 2)
-                self.find(self.pos).addstr(1, 2, self.board.get(self.pos).letter)
+                self.find(self.pos).addstr(1, 2, self.board.get(self.pos).symbol)
                 self.find(self.pos).refresh()
             self.textfield.addstr(0,0, "")
 

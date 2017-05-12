@@ -10,21 +10,21 @@ Game data is held on a `Board` object which represents the 64 chessboard positio
 
 ```python
 def slide_moves(self, dirs):
-      result = []
-      for move in dirs:
-          result.append(add(self.pos, move))
-          while True:
-              if not self.board.in_range(result[-1]):
-                  result.pop()
-                  break
-              elif self.board.get(result[-1]).color == self.color:
-                  result.pop()
-                  break
-              elif self.board.get(result[-1]).color == opposite_color(self.color):
-                  break
-              else:
-                  result.append(add(result[-1], move))
-      return result
+    result = []
+    for move in dirs:
+        result.append(add(self.pos, move))
+        while True:
+            if not self.board.in_range(result[-1]):
+                result.pop()
+                break
+            elif self.board.get(result[-1]).color == self.color:
+                result.pop()
+                break
+            elif self.board.get(result[-1]).color == opposite_color(self.color):
+                break
+            else:
+                result.append(add(result[-1], move))
+    return result
 ```
 
 After the list of possible moves is calculated, invalid moves (ones which would result in the current player's king in check) are subtracted, and if there are no valid moves available for any of the current player's pieces, the game is determined to be over and the program terminates.
@@ -35,4 +35,27 @@ The terminal screen is divided into sixty-five curses windows, sixty-four for th
 
 ![image of terminal screen](wireframes/terminal-screen.png)
 
-The `Display` object stores references to its windows in a two-dimensional list corresponding to the board list held by the `Board` object for easy coordination.
+The `Display` object stores references to its windows in a two-dimensional list corresponding to the board list held by the `Board` object for easy coordination. As per usual curses practice, windows are only refreshed when their state has been changed (e.g. new color pair, new piece to be displayed at that location, etc.)
+
+```python
+def render(self):
+    self.spaces = [[],[],[],[],[],[],[],[]]
+    for i in range(8):
+        for j in range(8):
+            win = curses.newwin(3, 6, i*3, j*6)
+            win.addstr(1, 2, self.board.get([i,j]).symbol)
+            self.spaces[i].append(win)
+            if [i, j] == self.selection:
+                self.set_color([i, j], 3)
+            elif (i+j)%2 == 0:
+                self.set_color([i, j], 1)
+            else:
+                self.set_color([i, j], 4)
+            win.refresh()
+```
+
+Initiating a display object disables key echoing and initiates cbreak mode, but both changes are reversed when the game is over, the curses main window closes and the program terminates.
+
+## Demo
+
+To access the game, simply download this repo and run the `game.py` file in a Python3 interpreter.

@@ -3,7 +3,7 @@ from .piece import Piece
 class Knight(Piece):
     def __init__(self, board, pos, color):
         super().__init__(board, pos, color)
-        self.letter = '♞'
+        self.symbol = '♞'
         self.move_dirs = [
             [1,2],
             [2,1],
