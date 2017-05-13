@@ -65,15 +65,29 @@ class Board(object):
                     moves.extend(self.get([i,j]).moves())
         return self.king_pos(color) in moves
 
+    def illegal_castle(self, pos, move):
+        if isinstance(self.get(pos), King):
+            if abs(pos[1] - move[1]) == 2:
+                color = self.get(pos).color
+                test_board = Board()
+                test_board.board = copy.deepcopy(self.board)
+                test_board.move_piece(pos, [pos[0],int((move[1]-pos[1])/2)+pos[1]])
+                return test_board.check(color)
+            else:
+                return False
+        else:
+            return False
+
     def valid_moves(self, pos):
         moves = self.get(pos).moves()
         result = []
         for move in moves:
             test_board = Board()
             test_board.board = copy.deepcopy(self.board)
-            test_board.move_piece(pos, move)
-            if not test_board.check(self.get(pos).color):
-                result.append(move)
+            if not self.illegal_castle(pos, move):
+                test_board.move_piece(pos, move)
+                if not test_board.check(self.get(pos).color):
+                    result.append(move)
         return result
 
     def checkmate(self, color):
