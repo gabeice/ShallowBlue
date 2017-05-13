@@ -17,6 +17,7 @@ class Game(object):
             self.turn = "black"
         else:
             self.turn = "white"
+        self.board.clear_pawn_vulnerabilities(self.turn)
 
     def play(self):
         while not self.board.over():

@@ -47,6 +47,14 @@ class Board(object):
             self.get(pos2).pos = pos2
             self.get(pos2).has_moved = True
             self.board[pos1[0]][pos1[1]] = NullPiece(self, pos1)
+            if isinstance(self.get(pos2), Pawn) and abs(pos1[0]-pos2[0]) == 2:
+                self.get(pos2).vulnerable = True
+
+    def clear_pawn_vulnerabilities(self, color):
+        for row in self.board:
+            for piece in row:
+                if piece.color == color and isinstance(piece, Pawn):
+                    piece.vulnerable = False
 
     def in_range(self, pos):
         return pos[0] in range(8) and pos[1] in range(8)

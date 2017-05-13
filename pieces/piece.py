@@ -14,6 +14,7 @@ class Piece(object):
         self.original_pos = pos
         self.color = color
         self.has_moved = False
+        self.vulnerable = False
 
     def step_moves(self, dirs):
         return [add(move, self.pos) for move in dirs if self.board.in_range(add(move, self.pos)) and self.board.get(add(move, self.pos)).color != self.color]
