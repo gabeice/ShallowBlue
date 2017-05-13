@@ -11,6 +11,7 @@ class Piece(object):
     def __init__(self, board, pos, color):
         self.board = board
         self.pos = pos
+        self.original_pos = pos
         self.color = color
 
     def step_moves(self, dirs):
@@ -32,3 +33,6 @@ class Piece(object):
                 else:
                     result.append(add(result[-1], move))
         return result
+
+    def has_moved(self):
+        return self.pos != self.original_pos

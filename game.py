@@ -3,6 +3,9 @@ from display import Display
 from pieces import opposite_color
 import os
 
+def move_two(pos1, pos2):
+    return abs(pos1[1] - pos2[1]) == 2
+
 class Game(object):
     def __init__(self):
         self.board = Board()
@@ -50,6 +53,12 @@ class Game(object):
 
         from_pos = self.get_from_pos()
         to_pos = self.get_to_pos(from_pos)
+
+        if from_pos == self.board.king_pos(self.turn) and move_two(from_pos, to_pos):
+            if to_pos[1] == 6:
+                self.board.move_piece([to_pos[0], 7], [to_pos[0], 5])
+            else:
+                self.board.move_piece([to_pos[0], 0], [to_pos[0], 3])
 
         self.board.move_piece(from_pos, to_pos)
         self.display.find(from_pos).refresh()
