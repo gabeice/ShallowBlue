@@ -13,6 +13,7 @@ class Piece(object):
         self.pos = pos
         self.original_pos = pos
         self.color = color
+        self.has_moved = False
 
     def step_moves(self, dirs):
         return [add(move, self.pos) for move in dirs if self.board.in_range(add(move, self.pos)) and self.board.get(add(move, self.pos)).color != self.color]
@@ -33,6 +34,3 @@ class Piece(object):
                 else:
                     result.append(add(result[-1], move))
         return result
-
-    def has_moved(self):
-        return self.pos != self.original_pos

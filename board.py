@@ -45,6 +45,7 @@ class Board(object):
         if not isinstance(self.get(pos1), NullPiece):
             self.board[pos2[0]][pos2[1]] = self.get(pos1)
             self.get(pos2).pos = pos2
+            self.get(pos2).has_moved = True
             self.board[pos1[0]][pos1[1]] = NullPiece(self, pos1)
 
     def in_range(self, pos):

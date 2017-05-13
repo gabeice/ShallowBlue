@@ -48,6 +48,12 @@ class Game(object):
                 self.display.textfield.refresh()
         return to_pos
 
+    def castle(self, to_pos, from_pos):
+        if to_pos[1] == 6:
+            self.board.move_piece([to_pos[0], 7], [to_pos[0], 5])
+        else:
+            self.board.move_piece([to_pos[0], 0], [to_pos[0], 3])
+
     def play_turn(self):
         self.display.print_message("  %s's turn   " % self.turn)
 
@@ -55,10 +61,7 @@ class Game(object):
         to_pos = self.get_to_pos(from_pos)
 
         if from_pos == self.board.king_pos(self.turn) and move_two(from_pos, to_pos):
-            if to_pos[1] == 6:
-                self.board.move_piece([to_pos[0], 7], [to_pos[0], 5])
-            else:
-                self.board.move_piece([to_pos[0], 0], [to_pos[0], 3])
+            self.castle(to_pos, from_pos)
 
         self.board.move_piece(from_pos, to_pos)
         self.display.find(from_pos).refresh()

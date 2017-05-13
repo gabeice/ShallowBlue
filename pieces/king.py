@@ -18,9 +18,9 @@ class King(Piece):
 
     def moves(self):
         moves = super().step_moves(self.move_dirs)
-        if not self.has_moved():
-            if not self.board.get(add(self.pos, [0,3])).has_moved() and isinstance(self.board.get(add(self.pos, [0,1])), NullPiece) and isinstance(self.board.get(add(self.pos, [0,2])), NullPiece):
+        if not self.has_moved:
+            if not self.board.get(add(self.pos, [0,3])).has_moved and isinstance(self.board.get(add(self.pos, [0,1])), NullPiece) and isinstance(self.board.get(add(self.pos, [0,2])), NullPiece):
                 moves.append(add(self.pos, [0,2]))
-            if not self.board.get(add(self.pos, [0,-4])).has_moved() and isinstance(self.board.get(add(self.pos, [0,-3])), NullPiece) and isinstance(self.board.get(add(self.pos, [0,-2])), NullPiece) and isinstance(self.board.get(add(self.pos, [0,-1])), NullPiece):
+            if not self.board.get(add(self.pos, [0,-4])).has_moved and isinstance(self.board.get(add(self.pos, [0,-3])), NullPiece) and isinstance(self.board.get(add(self.pos, [0,-2])), NullPiece) and isinstance(self.board.get(add(self.pos, [0,-1])), NullPiece):
                 moves.append(add(self.pos, [0,-2]))
         return moves
