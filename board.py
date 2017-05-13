@@ -41,14 +41,23 @@ class Board(object):
         else:
             return self.board[pos[0]][pos[1]]
 
+    def behind(self, pos):
+        if self.get(pos).color == "white":
+            return [pos[0]+1,pos[1]]
+        else:
+            return [pos[0]-1,pos[1]]
+
     def move_piece(self, pos1, pos2):
         if not isinstance(self.get(pos1), NullPiece):
+            is_empty = isinstance(self.get(pos2), NullPiece)
             self.board[pos2[0]][pos2[1]] = self.get(pos1)
             self.get(pos2).pos = pos2
             self.get(pos2).has_moved = True
             self.board[pos1[0]][pos1[1]] = NullPiece(self, pos1)
             if isinstance(self.get(pos2), Pawn) and abs(pos1[0]-pos2[0]) == 2:
                 self.get(pos2).vulnerable = True
+            if isinstance(self.get(pos2), Pawn) and is_empty and isinstance(self.get(self.behind(pos2)), Pawn):
+                self.board[self.behind(pos2)[0]][self.behind(pos2)[1]] = NullPiece(self, self.behind(pos2))
 
     def clear_pawn_vulnerabilities(self, color):
         for row in self.board:
