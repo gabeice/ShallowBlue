@@ -58,6 +58,8 @@ class Board(object):
                 self.get(pos2).vulnerable = True
             if isinstance(self.get(pos2), Pawn) and is_empty and isinstance(self.get(self.behind(pos2)), Pawn):
                 self.board[self.behind(pos2)[0]][self.behind(pos2)[1]] = NullPiece(self, self.behind(pos2))
+            if isinstance(self.get(pos2), Pawn) and (pos2[0] == 0 or pos2[0] == 7):
+                self.board[pos2[0]][pos2[1]] = Queen(self, pos2, self.get(pos2).color)
 
     def clear_pawn_vulnerabilities(self, color):
         for row in self.board:
