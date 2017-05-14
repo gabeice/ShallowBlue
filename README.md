@@ -29,6 +29,8 @@ def slide_moves(self, dirs):
 
 After the list of possible moves is calculated, invalid moves (ones which would result in the current player's king in check) are subtracted, and if there are no valid moves available for any of the current player's pieces, the game is determined to be over and the program terminates.
 
+The game also supports the more obscure chess moves such as castling, pawn capture en passant and pawn promotion. The first two of these both have restrictions which require keeping track of a piece's movement history. Kings can only castle if neither they nor the rook they are castling with have been previously moved, and an en passant can only take place on the turn immediately following a pawns two-step move. This is taken care of by supplying kings and rooks with a `has_moved` attribute and pawns with a `vulnerable` attribute, both of which are updated on a turn-by-turn basis whenever appropriate.
+
 ### Display
 
 The terminal screen is divided into sixty-five curses windows, sixty-four for the squares of the board and one below the board to display messages. There are eight color pairs, four possible background colors and two foreground colors. Pieces are black and white, squares are alternating dark brown and light brown on terminals for which the curses `can_change_color()` method returns `True`, blue and yellow otherwise.
