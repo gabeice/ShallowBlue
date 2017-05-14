@@ -1,6 +1,6 @@
 from board import Board
 from display import Display
-from pieces import opposite_color
+from player import Player
 import os
 
 def move_two(pos1, pos2):
@@ -9,15 +9,17 @@ def move_two(pos1, pos2):
 class Game(object):
     def __init__(self):
         self.board = Board()
-        self.turn = "white"
+        self.player1 = Player("white")
+        self.player2 = Player("black")
         self.display = Display(self.board)
+        self.current_player = self.player1
 
     def switch_turn(self):
-        if self.turn == "white":
-            self.turn = "black"
+        if self.current_player == self.player1:
+            self.current_player = self.player2
         else:
-            self.turn = "white"
-        self.board.clear_pawn_vulnerabilities(self.turn)
+            self.current_player = self.player1
+        self.board.clear_pawn_vulnerabilities(self.current_player.color)
 
     def play(self):
         while not self.board.over():
@@ -30,25 +32,6 @@ class Game(object):
             self.display.sleep(2000)
             self.display.close()
 
-    def get_from_pos(self):
-        from_pos = []
-        while self.board.get(from_pos).color != self.turn or self.board.valid_moves(from_pos) == []:
-            from_pos = self.display.get_move()[:]
-            if self.board.get(from_pos).color == opposite_color(self.turn):
-                self.display.print_message("Not your piece")
-                self.display.textfield.refresh()
-        self.display.selection = from_pos
-        return from_pos
-
-    def get_to_pos(self, from_pos):
-        to_pos = []
-        while to_pos not in self.board.valid_moves(from_pos):
-            to_pos = self.display.get_move()[:]
-            if to_pos not in self.board.valid_moves(from_pos):
-                self.display.print_message("Not a valid move")
-                self.display.textfield.refresh()
-        return to_pos
-
     def castle(self, to_pos, from_pos):
         if to_pos[1] == 6:
             self.board.move_piece([to_pos[0], 7], [to_pos[0], 5])
@@ -56,12 +39,12 @@ class Game(object):
             self.board.move_piece([to_pos[0], 0], [to_pos[0], 3])
 
     def play_turn(self):
-        self.display.print_message("  %s's turn   " % self.turn)
+        self.display.print_message("  %s's turn   " % self.current_player.color)
 
-        from_pos = self.get_from_pos()
-        to_pos = self.get_to_pos(from_pos)
+        from_pos = self.current_player.get_from_pos(self.board, self.display)
+        to_pos = self.current_player.get_to_pos(from_pos, self.board, self.display)
 
-        if from_pos == self.board.king_pos(self.turn) and move_two(from_pos, to_pos):
+        if from_pos == self.board.king_pos(self.current_player.color) and move_two(from_pos, to_pos):
             self.castle(to_pos, from_pos)
 
         self.board.move_piece(from_pos, to_pos)
