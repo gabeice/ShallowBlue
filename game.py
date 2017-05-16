@@ -1,13 +1,14 @@
 from board import Board
 from display import Display
 from player import Player
+from ai_player import AIPlayer
 import os
 
 class Game(object):
     def __init__(self):
         self.board = Board()
         self.player1 = Player("white")
-        self.player2 = Player("black")
+        self.player2 = AIPlayer("black")
         self.display = Display(self.board)
         self.current_player = self.player1
 
@@ -33,14 +34,17 @@ class Game(object):
         self.display.print_message("  %s's turn   " % self.current_player.color)
 
         move = self.current_player.get_move(self.board, self.display)
+
         from_pos = move[0]
         to_pos = move[1]
 
         self.board.move_piece(from_pos, to_pos)
         self.display.find(from_pos).refresh()
         self.display.find(to_pos).refresh()
-        self.display.find(self.display.selection).refresh()
-        self.display.selection = None
+
+        if not isinstance(self.current_player, AIPlayer):
+            self.display.find(self.display.selection).refresh()
+            self.display.selection = None
 
 test = Game()
 test.play()
