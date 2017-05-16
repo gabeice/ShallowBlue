@@ -3,9 +3,6 @@ from display import Display
 from player import Player
 import os
 
-def move_two(pos1, pos2):
-    return abs(pos1[1] - pos2[1]) == 2
-
 class Game(object):
     def __init__(self):
         self.board = Board()
@@ -32,20 +29,12 @@ class Game(object):
             self.display.sleep(2000)
             self.display.close()
 
-    def castle(self, to_pos, from_pos):
-        if to_pos[1] == 6:
-            self.board.move_piece([to_pos[0], 7], [to_pos[0], 5])
-        else:
-            self.board.move_piece([to_pos[0], 0], [to_pos[0], 3])
-
     def play_turn(self):
         self.display.print_message("  %s's turn   " % self.current_player.color)
 
-        from_pos = self.current_player.get_from_pos(self.board, self.display)
-        to_pos = self.current_player.get_to_pos(from_pos, self.board, self.display)
-
-        if from_pos == self.board.king_pos(self.current_player.color) and move_two(from_pos, to_pos):
-            self.castle(to_pos, from_pos)
+        move = self.current_player.get_move(self.board, self.display)
+        from_pos = move[0]
+        to_pos = move[1]
 
         self.board.move_piece(from_pos, to_pos)
         self.display.find(from_pos).refresh()

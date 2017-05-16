@@ -1,6 +1,9 @@
 from pieces import *
 import copy
 
+def move_two(pos1, pos2):
+    return abs(pos1[1] - pos2[1]) == 2
+
 class Board(object):
     def __init__(self):
         self.board = []
@@ -47,6 +50,12 @@ class Board(object):
         else:
             return [pos[0]-1,pos[1]]
 
+    def castle(self, to_pos, from_pos):
+        if to_pos[1] == 6:
+            self.move_piece([to_pos[0], 7], [to_pos[0], 5])
+        else:
+            self.move_piece([to_pos[0], 0], [to_pos[0], 3])
+
     def move_piece(self, pos1, pos2):
         if not isinstance(self.get(pos1), NullPiece):
             is_empty = isinstance(self.get(pos2), NullPiece)
@@ -60,6 +69,8 @@ class Board(object):
                 self.board[self.behind(pos2)[0]][self.behind(pos2)[1]] = NullPiece(self, self.behind(pos2))
             if isinstance(self.get(pos2), Pawn) and (pos2[0] == 0 or pos2[0] == 7):
                 self.board[pos2[0]][pos2[1]] = Queen(self, pos2, self.get(pos2).color)
+            if pos2 == self.king_pos(self.get(pos2).color) and move_two(pos1, pos2):
+                self.castle(pos2, pos1)
 
     def clear_pawn_vulnerabilities(self, color):
         for row in self.board:

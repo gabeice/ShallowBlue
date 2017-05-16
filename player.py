@@ -22,3 +22,8 @@ class Player(object):
                 display.print_message("Not a valid move")
                 display.textfield.refresh()
         return to_pos
+
+    def get_move(self, board, display):
+        from_pos = self.get_from_pos(board, display)
+        to_pos = self.get_to_pos(from_pos, board, display)
+        return [from_pos, to_pos]
