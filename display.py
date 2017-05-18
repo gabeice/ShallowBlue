@@ -9,6 +9,7 @@ class Display(object):
         self.selection = None
         self.spaces = [[],[],[],[],[],[],[],[]]
         self.textfield = curses.newwin(3, 18, 24, 0)
+        self.terminate = False
 
         curses.noecho()
         curses.cbreak()
@@ -89,6 +90,9 @@ class Display(object):
                 self.set_color(self.pos, 2)
                 self.find(self.pos).addstr(1, 2, self.board.get(self.pos).symbol)
                 self.find(self.pos).refresh()
+            elif key == 'q':
+                self.terminate = True
+                break
             self.textfield.addstr(0,0, "")
 
         return self.pos

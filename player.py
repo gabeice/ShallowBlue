@@ -24,6 +24,8 @@ class Player(object):
         return to_pos
 
     def get_move(self, board, display):
-        from_pos = self.get_from_pos(board, display)
-        to_pos = self.get_to_pos(from_pos, board, display)
-        return [from_pos, to_pos]
+        if not display.terminate:
+            from_pos = self.get_from_pos(board, display)
+            if not display.terminate:
+                to_pos = self.get_to_pos(from_pos, board, display)
+                return [from_pos, to_pos]
