@@ -57,7 +57,7 @@ class AIPlayer(Player):
             if occupant.color == opposite_color(self.color) and occupant.value > best_value:
                 best = move
                 best_value = occupant.value
-        return best
+        return [best, best_value]
 
     def mate_move(self, board, move):
         test_board = Board()
@@ -71,4 +71,8 @@ class AIPlayer(Player):
             if self.mate_move(board, move):
                 return move
         else:
-            return self.best_move(board, moves)
+            best = self.best_move(board, moves)
+            if best[1] > 0:
+                return best[0]
+            else:
+                return random.choice(moves)
