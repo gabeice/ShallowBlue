@@ -5,6 +5,7 @@ class Rook(Piece):
         super().__init__(board, pos, color)
         self.symbol = '♜'
         self.move_dirs = [[0,1],[0,-1],[1,0],[-1,0]]
+        self.value = 5
 
     def moves(self):
         return super().slide_moves(self.move_dirs)

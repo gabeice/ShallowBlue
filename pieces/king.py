@@ -15,6 +15,7 @@ class King(Piece):
             [-1,1],
             [-1,-1]
         ]
+        self.value = 0
 
     def moves(self):
         moves = super().step_moves(self.move_dirs)

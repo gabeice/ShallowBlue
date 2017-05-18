@@ -5,6 +5,7 @@ class Pawn(Piece):
     def __init__(self, board, pos, color):
         super().__init__(board, pos, color)
         self.symbol = '♟'
+        self.value = 1
 
     def black_moves(self):
         result = []

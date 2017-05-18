@@ -1,5 +1,5 @@
 from player import Player
-from pieces import *
+from pieces import opposite_color
 from board import Board
 import random
 import copy
@@ -31,14 +31,7 @@ class AIPlayer(Player):
             for j in range(8):
                 piece = board.get([i,j])
                 if piece.color == color:
-                    if isinstance(piece, Queen):
-                        result += 9
-                    elif isinstance(piece, Rook):
-                        result += 5
-                    elif isinstance(piece, Bishop) or isinstance(piece, Knight):
-                        result += 3
-                    else:
-                        result += 1
+                    result += piece.value
         return result
 
     def own_score(self, board):
@@ -56,6 +49,16 @@ class AIPlayer(Player):
                 moves.append([position, move])
         return moves
 
+    def best_move(self, board, moves):
+        best = moves[0]
+        best_value = 0
+        for move in moves:
+            occupant = board.get(move[1])
+            if occupant.color == opposite_color(self.color) and occupant.value > best_value:
+                best = move
+                best_value = occupant.value
+        return best
+
     def mate_move(self, board, move):
         test_board = Board()
         test_board.board = copy.deepcopy(board.board)
@@ -68,4 +71,4 @@ class AIPlayer(Player):
             if self.mate_move(board, move):
                 return move
         else:
-            return random.choice(moves)
+            return self.best_move(board, moves)

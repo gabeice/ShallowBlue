@@ -5,6 +5,7 @@ class Bishop(Piece):
         super().__init__(board, pos, color)
         self.symbol = '♝'
         self.move_dirs = [[1,1],[1,-1],[-1,1],[-1,-1]]
+        self.value = 3
 
     def moves(self):
         return super().slide_moves(self.move_dirs)

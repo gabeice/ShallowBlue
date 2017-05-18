@@ -14,6 +14,7 @@ class Knight(Piece):
             [-2,-1],
             [-1,-2]
         ]
+        self.value = 3
 
     def moves(self):
         return super().step_moves(self.move_dirs)

@@ -14,6 +14,7 @@ class Queen(Piece):
             [-1,1],
             [-1,-1]
         ]
+        self.value = 9
 
     def moves(self):
         return super().slide_moves(self.move_dirs)
