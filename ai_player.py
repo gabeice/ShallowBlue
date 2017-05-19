@@ -49,21 +49,53 @@ class AIPlayer(Player):
                 moves.append([position, move])
         return moves
 
-    def best_move(self, board, moves):
+    def opponent_available_moves(self, board):
+        moves = []
+        positions = self.opposition_pieces(board)
+        for position in positions:
+            possibilities = board.valid_moves(position)
+            for move in possibilities:
+                moves.append([position, move])
+        return moves
+
+    def move_value(self, board, move):
+        value = 0
+        occupant = board.get(move[1])
+        if occupant.color == opposite_color(self.color):
+            value = occupant.value
+        new_board = Board()
+        new_board.board = copy.deepcopy(board.board)
+        new_board.move_piece(move[0], move[1])
+        value -= self.best_move(new_board, self.opponent_available_moves(new_board), opposite_color(self.color))[1]
+        return value
+
+    def best_move(self, board, moves, color):
         best = moves[0]
         best_value = 0
         for move in moves:
             occupant = board.get(move[1])
-            if occupant.color == opposite_color(self.color) and occupant.value > best_value:
+            if occupant.color == opposite_color(color) and occupant.value > best_value:
                 best = move
                 best_value = occupant.value
         return [best, best_value]
 
+    def best_moves(self, board, moves):
+        best = 0
+        result = []
+        for move in moves:
+            value = self.move_value(board, move)
+            if value > best:
+                result = [move]
+                best = value
+            elif value == best:
+                result += [move]
+        return result
+
     def mate_move(self, board, move):
-        test_board = Board()
-        test_board.board = copy.deepcopy(board.board)
-        test_board.move_piece(move[0], move[1])
-        return test_board.checkmate(opposite_color(self.color))
+        new_board = Board()
+        new_board.board = copy.deepcopy(board.board)
+        new_board.move_piece(move[0], move[1])
+        return new_board.checkmate(opposite_color(self.color))
 
     def get_move(self, board, display):
         moves = self.available_moves(board)
@@ -71,8 +103,5 @@ class AIPlayer(Player):
             if self.mate_move(board, move):
                 return move
         else:
-            best = self.best_move(board, moves)
-            if best[1] > 0:
-                return best[0]
-            else:
-                return random.choice(moves)
+            best = self.best_moves(board, moves)
+            return random.choice(moves)
