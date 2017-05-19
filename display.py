@@ -66,6 +66,7 @@ class Display(object):
             self.set_color(self.selection, 3)
         self.find(self.pos).addstr(1, 2, self.board.get(self.pos).symbol)
         self.find(self.pos).refresh()
+        self.textfield.refresh()
 
         while key != '\n':
             key = self.textfield.getkey()

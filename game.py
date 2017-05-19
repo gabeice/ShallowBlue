@@ -38,6 +38,7 @@ class Game(object):
 
     def play_turn(self):
         self.display.print_message("  %s's turn   " % self.current_player.color)
+        self.display.textfield.refresh()
 
         move = self.current_player.get_move(self.board, self.display)
 
@@ -46,12 +47,10 @@ class Game(object):
             to_pos = move[1]
 
             self.board.move_piece(from_pos, to_pos)
-            self.display.find(from_pos).refresh()
-            self.display.find(to_pos).refresh()
 
             if not isinstance(self.current_player, AIPlayer):
-                self.display.find(self.display.selection).refresh()
                 self.display.selection = None
+            self.display.render()
 
 test = Game()
 test.play()
