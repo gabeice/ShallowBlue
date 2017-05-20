@@ -16,9 +16,10 @@ class Player(object):
 
     def get_to_pos(self, from_pos, board, display):
         to_pos = []
-        while to_pos not in board.valid_moves(from_pos):
+        moves = board.valid_moves(from_pos)
+        while to_pos not in moves and to_pos != from_pos:
             to_pos = display.get_move()[:]
-            if to_pos not in board.valid_moves(from_pos):
+            if to_pos not in moves and to_pos != from_pos:
                 display.print_message("Not a valid move")
                 display.textfield.refresh()
         return to_pos
@@ -28,4 +29,9 @@ class Player(object):
             from_pos = self.get_from_pos(board, display)
             if not display.terminate:
                 to_pos = self.get_to_pos(from_pos, board, display)
-                return [from_pos, to_pos]
+                if to_pos == from_pos:
+                    display.selection = None
+                    display.find(to_pos).refresh()
+                    return self.get_move(board, display)
+                else:
+                    return [from_pos, to_pos]
