@@ -80,7 +80,7 @@ class AIPlayer(Player):
         return [best, best_value]
 
     def best_moves(self, board, moves):
-        best = 0
+        best = -100
         result = []
         for move in moves:
             value = self.move_value(board, move)
@@ -104,4 +104,4 @@ class AIPlayer(Player):
                 return move
         else:
             best = self.best_moves(board, moves)
-            return random.choice(moves)
+            return random.choice(best)
