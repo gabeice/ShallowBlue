@@ -1,5 +1,6 @@
 from .piece import Piece
 
+
 class Knight(Piece):
     def __init__(self, board, pos, color):
         super().__init__(board, pos, color)

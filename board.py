@@ -1,8 +1,10 @@
 from pieces import *
 import copy
 
+
 def move_two(pos1, pos2):
     return abs(pos1[1] - pos2[1]) == 2
+
 
 class Board(object):
     def __init__(self):

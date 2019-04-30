@@ -1,5 +1,6 @@
 import curses
 
+
 class Display(object):
     def __init__(self, board):
         self.screen = curses.initscr()
@@ -52,7 +53,7 @@ class Display(object):
                 self.spaces[i].append(win)
                 if [i, j] == self.selection:
                     self.set_color([i, j], 3)
-                elif (i+j)%2 == 0:
+                elif (i+j) % 2 == 0:
                     self.set_color([i, j], 1)
                 else:
                     self.set_color([i, j], 4)

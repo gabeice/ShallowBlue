@@ -4,6 +4,7 @@ from board import Board
 import random
 import copy
 
+
 class AIPlayer(Player):
     def __init__(self, color):
         super().__init__(color)

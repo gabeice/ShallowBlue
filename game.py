@@ -4,11 +4,12 @@ from player import Player
 from ai_player import AIPlayer
 import os
 
+
 class Game(object):
     def __init__(self):
         self.board = Board()
         self.player1 = Player("white")
-        self.player2 = AIPlayer("black")
+        self.player2 = Player("black")
         self.display = Display(self.board)
         self.current_player = self.player1
 
@@ -51,6 +52,7 @@ class Game(object):
             if not isinstance(self.current_player, AIPlayer):
                 self.display.selection = None
             self.display.render()
+
 
 test = Game()
 test.play()
