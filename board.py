@@ -11,7 +11,7 @@ class Board(object):
         self.board = []
         self.men_row(0, "black")
         self.pawn_row(1, "black")
-        for i in range(2,6):
+        for i in range(2, 6):
             self.empty_row(i)
         self.pawn_row(6, "white")
         self.men_row(7, "white")
@@ -42,7 +42,7 @@ class Board(object):
 
     def get(self, pos):
         if not pos:
-            return NullPiece(self, [0,0])
+            return NullPiece(self, [0, 0])
         else:
             return self.board[pos[0]][pos[1]]
 
@@ -87,7 +87,7 @@ class Board(object):
     def king_pos(self, color):
         for i in range(8):
             for j in range(8):
-                if isinstance(self.get([i, j]), King) and self.get([i,j]).color == color:
+                if isinstance(self.get([i, j]), King) and self.get([i, j]).color == color:
                     return [i, j]
 
     def check(self, color):

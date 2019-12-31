@@ -17,7 +17,7 @@ class Pawn(Piece):
         if self.board.in_range(add(self.pos, [1, 1])):
             if self.board.get(add(self.pos, [1, 1])).color == "white":
                 result.append(add(self.pos, [1, 1]))
-            elif self.board.get(add(self.pos, [0,1])).color == "white"\
+            elif self.board.get(add(self.pos, [0, 1])).color == "white"\
                     and self.board.get(add(self.pos, [0, 1])).vulnerable:
                 result.append(add(self.pos, [1, 1]))
         if self.board.in_range(add(self.pos, [1, -1])):
