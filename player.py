@@ -1,5 +1,6 @@
 from pieces import opposite_color
 
+
 class Player(object):
     def __init__(self, color):
         self.color = color
@@ -14,7 +15,8 @@ class Player(object):
         display.selection = from_pos
         return from_pos
 
-    def get_to_pos(self, from_pos, board, display):
+    @staticmethod
+    def get_to_pos(from_pos, board, display):
         to_pos = []
         moves = board.valid_moves(from_pos)
         while to_pos not in moves and to_pos != from_pos:

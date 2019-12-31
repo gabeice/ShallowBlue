@@ -14,23 +14,24 @@ class AIPlayer(Player):
         result = []
         for i in range(8):
             for j in range(8):
-                if board.get([i,j]).color == self.color:
-                    result.append([i,j])
+                if board.get([i, j]).color == self.color:
+                    result.append([i, j])
         return result
 
     def opposition_pieces(self, board):
         result = []
         for i in range(8):
             for j in range(8):
-                if board.get([i,j]).color == opposite_color(self.color):
-                    result.append([i,j])
+                if board.get([i, j]).color == opposite_color(self.color):
+                    result.append([i, j])
         return result
 
-    def score(self, board, color):
+    @staticmethod
+    def score(board, color):
         result = 0
         for i in range(8):
             for j in range(8):
-                piece = board.get([i,j])
+                piece = board.get([i, j])
                 if piece.color == color:
                     result += piece.value
         return result
@@ -70,7 +71,8 @@ class AIPlayer(Player):
         value -= self.best_move(new_board, self.opponent_available_moves(new_board), opposite_color(self.color))[1]
         return value
 
-    def best_move(self, board, moves, color):
+    @staticmethod
+    def best_move(board, moves, color):
         best = moves[0]
         best_value = 0
         for move in moves:

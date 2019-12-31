@@ -6,9 +6,9 @@ class Display(object):
         self.screen = curses.initscr()
         self.screen.keypad(True)
         self.board = board
-        self.pos = [0,0]
+        self.pos = [0, 0]
         self.selection = None
-        self.spaces = [[],[],[],[],[],[],[],[]]
+        self.spaces = [[], [], [], [], [], [], [], []]
         self.textfield = curses.newwin(3, 18, 24, 0)
         self.terminate = False
 
@@ -41,11 +41,12 @@ class Display(object):
         else:
             self.find(square).bkgd(curses.color_pair(color+4))
 
-    def sleep(self, time):
+    @staticmethod
+    def sleep(time):
         curses.napms(time)
 
     def render(self):
-        self.spaces = [[],[],[],[],[],[],[],[]]
+        self.spaces = [[], [], [], [], [], [], [], []]
         for i in range(8):
             for j in range(8):
                 win = curses.newwin(3, 6, i*3, j*6)
@@ -63,7 +64,7 @@ class Display(object):
         key = None
         self.render()
         self.set_color(self.pos, 2)
-        if(self.selection):
+        if self.selection:
             self.set_color(self.selection, 3)
         self.find(self.pos).addstr(1, 2, self.board.get(self.pos).symbol)
         self.find(self.pos).refresh()
@@ -72,7 +73,7 @@ class Display(object):
         while key != '\n':
             key = self.textfield.getkey()
             if key in "ABCD":
-                if (self.pos == self.selection):
+                if self.pos == self.selection:
                     self.set_color(self.pos, 3)
                 elif (self.pos[0] + self.pos[1])%2 == 0:
                     self.set_color(self.pos, 1)
@@ -95,7 +96,7 @@ class Display(object):
             elif key == 'q':
                 self.terminate = True
                 break
-            self.textfield.addstr(0,0, "")
+            self.textfield.addstr(0, 0, "")
 
         return self.pos
 

@@ -2,7 +2,6 @@ from board import Board
 from display import Display
 from player import Player
 from ai_player import AIPlayer
-import os
 
 
 class Game(object):

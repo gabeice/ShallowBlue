@@ -19,7 +19,9 @@ class Piece(object):
         self.vulnerable = False
 
     def step_moves(self, dirs):
-        return [add(move, self.pos) for move in dirs if self.board.in_range(add(move, self.pos)) and self.board.get(add(move, self.pos)).color != self.color]
+        return [add(move, self.pos) for move in dirs
+                if self.board.in_range(add(move, self.pos))
+                and self.board.get(add(move, self.pos)).color != self.color]
 
     def slide_moves(self, dirs):
         result = []

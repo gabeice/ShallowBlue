@@ -41,18 +41,18 @@ class Board(object):
         ])
 
     def get(self, pos):
-        if pos == []:
+        if not pos:
             return NullPiece(self, [0,0])
         else:
             return self.board[pos[0]][pos[1]]
 
     def behind(self, pos):
         if self.get(pos).color == "white":
-            return [pos[0]+1,pos[1]]
+            return [pos[0]+1, pos[1]]
         else:
-            return [pos[0]-1,pos[1]]
+            return [pos[0]-1, pos[1]]
 
-    def castle(self, to_pos, from_pos):
+    def castle(self, to_pos):
         if to_pos[1] == 6:
             self.move_piece([to_pos[0], 7], [to_pos[0], 5])
         else:
@@ -72,7 +72,7 @@ class Board(object):
             if isinstance(self.get(pos2), Pawn) and (pos2[0] == 0 or pos2[0] == 7):
                 self.board[pos2[0]][pos2[1]] = Queen(self, pos2, self.get(pos2).color)
             if pos2 == self.king_pos(self.get(pos2).color) and move_two(pos1, pos2):
-                self.castle(pos2, pos1)
+                self.castle(pos2)
 
     def clear_pawn_vulnerabilities(self, color):
         for row in self.board:
@@ -80,21 +80,22 @@ class Board(object):
                 if piece.color == color and isinstance(piece, Pawn):
                     piece.vulnerable = False
 
-    def in_range(self, pos):
+    @staticmethod
+    def in_range(pos):
         return pos[0] in range(8) and pos[1] in range(8)
 
     def king_pos(self, color):
         for i in range(8):
             for j in range(8):
-                if isinstance(self.get([i,j]), King) and self.get([i,j]).color == color:
-                    return [i,j]
+                if isinstance(self.get([i, j]), King) and self.get([i,j]).color == color:
+                    return [i, j]
 
     def check(self, color):
         moves = []
         for i in range(8):
             for j in range(8):
-                if self.get([i,j]).color == opposite_color(color):
-                    moves.extend(self.get([i,j]).moves())
+                if self.get([i, j]).color == opposite_color(color):
+                    moves.extend(self.get([i, j]).moves())
         return self.king_pos(color) in moves
 
     def illegal_castle(self, pos, move):
@@ -103,7 +104,7 @@ class Board(object):
                 color = self.get(pos).color
                 test_board = Board()
                 test_board.board = copy.deepcopy(self.board)
-                test_board.move_piece(pos, [pos[0],int((move[1]-pos[1])/2)+pos[1]])
+                test_board.move_piece(pos, [pos[0], int((move[1]-pos[1])/2)+pos[1]])
                 return test_board.check(color)
             else:
                 return False
@@ -125,7 +126,7 @@ class Board(object):
     def checkmate(self, color):
         for i in range(8):
             for j in range(8):
-                if self.get([i,j]).color == color and self.valid_moves([i,j]) != []:
+                if self.get([i, j]).color == color and self.valid_moves([i, j]) != []:
                     return False
         else:
             return True
@@ -140,10 +141,10 @@ class Board(object):
             return "white"
 
     def render(self):
-        print ("_"*33)
+        print("_"*33)
         for row in self.board:
-            print ("|", end="")
+            print("|", end="")
             for item in row:
-                print (" %s |" % (item.symbol), end="")
-            print ("\n", end="")
-            print ("_"*33)
+                print(" %s |" % item.symbol, end="")
+            print("\n", end="")
+            print("_"*33)
