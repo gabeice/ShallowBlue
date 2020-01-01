@@ -80,10 +80,6 @@ class Board(object):
                 if piece.color == color and isinstance(piece, Pawn):
                     piece.vulnerable = False
 
-    @staticmethod
-    def in_range(pos):
-        return pos[0] in range(8) and pos[1] in range(8)
-
     def king_pos(self, color):
         for i in range(8):
             for j in range(8):

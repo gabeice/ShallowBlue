@@ -1,5 +1,5 @@
 from board import Board
-from display import Display
+from display import Display, sleep
 from player import Player
 from ai_player import AIPlayer
 
@@ -23,7 +23,7 @@ class Game(object):
         self.display.render()
         self.display.print_message("%s wins!   " % self.board.winner())
         self.display.textfield.refresh()
-        self.display.sleep(2000)
+        sleep(2000)
         self.display.close()
 
     def play(self):

@@ -9,6 +9,10 @@ def opposite_color(color):
         return "white"
 
 
+def in_range(pos):
+    return pos[0] in range(8) and pos[1] in range(8)
+
+
 class Piece(object):
     def __init__(self, board, pos, color):
         self.board = board
@@ -20,7 +24,7 @@ class Piece(object):
 
     def step_moves(self, dirs):
         return [add(move, self.pos) for move in dirs
-                if self.board.in_range(add(move, self.pos))
+                if in_range(add(move, self.pos))
                 and self.board.get(add(move, self.pos)).color != self.color]
 
     def slide_moves(self, dirs):
@@ -28,7 +32,7 @@ class Piece(object):
         for move in dirs:
             result.append(add(self.pos, move))
             while True:
-                if not self.board.in_range(result[-1]):
+                if not in_range(result[-1]):
                     result.pop()
                     break
                 elif self.board.get(result[-1]).color == self.color:

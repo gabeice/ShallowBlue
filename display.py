@@ -1,6 +1,10 @@
 import curses
 
 
+def sleep(time):
+    curses.napms(time)
+
+
 class Display(object):
     def __init__(self, board):
         self.screen = curses.initscr()
@@ -40,10 +44,6 @@ class Display(object):
             self.find(square).bkgd(curses.color_pair(color))
         else:
             self.find(square).bkgd(curses.color_pair(color+4))
-
-    @staticmethod
-    def sleep(time):
-        curses.napms(time)
 
     def render(self):
         self.spaces = [[], [], [], [], [], [], [], []]
